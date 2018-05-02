@@ -9,11 +9,12 @@ private:
     int max;
 public:
     Calentador(int min, int max, int temperatura = 0);    
-    void calentar();
-    void enfriar();
+    void operator++();
+    void operator--();
     void imprimeCentigrados() const;
     void imprimeFarenheit() const;
     int accedeTemperatura() const;
+    bool operator==(Calentador otro); // sobrecarga de metodo miembro
 };  // punto y coma obligatorio
 
 Calentador::Calentador(int min, int max, int temperatura)
@@ -34,14 +35,14 @@ Calentador::Calentador(int min, int max, int temperatura)
     this->max = max;
 }
 
-void Calentador::calentar()
+void Calentador::operator++()
 {
     if (temperatura + incremento <= this->max) {
         temperatura += incremento;
     }
 }
 
-void Calentador::enfriar()
+void Calentador::operator--()
 {
     if (temperatura - incremento >= this->min)    {
         temperatura -= incremento;
@@ -66,17 +67,37 @@ void Calentador::imprimeFarenheit() const
                 << " ºF" << std::endl;
 }
 
+bool Calentador::operator==(Calentador otro)
+{
+    if (this->temperatura == otro.temperatura)  {
+        return true;
+    }    
+    else    {
+        return false;
+    }
+}
+
 int main()
 {
    // try {
-        Calentador c1{-10, 10};
-        Calentador c2{30, 10, -10};
+        Calentador c1{-10, 10}; 
+        Calentador c2{0, 30, 10};
     
-        c1.calentar();
+        // c1 == c2 es equivalente a c1.operator==(c2)
+        if (c1 == c2)   {
+            std::cout << "Iguales\n";
+        }
+        else    {
+            std::cout << "Diferentes\n";
+        }
+        
+        // ++c1 es equivalente a c1.operator++();
+        ++c1;
         c1.imprimeCentigrados();
         c1.imprimeFarenheit();
     
-        c2.enfriar();
+        // --c2 es equivalente a c2.operator--();
+        --c2;
         c2.imprimeCentigrados();
         c2.imprimeFarenheit();
   /*  }
